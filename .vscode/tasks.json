@@ -1,0 +1,91 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build-64 Program (CUDA, MPI, OPENMP)",
+            "type": "shell",
+            "command": "nvcc",
+            "args": [
+                "${file}",
+                "-o",
+                "${workspaceFolder}\\bin\\${fileBasenameNoExtension}.exe",
+                // TODO - you can change the specefied compiler here. make sure it support to be host compoiler! uncomment
+                // "-ccbin",
+                // "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/cl.exe",
+                "-I",
+                // TODO - update {D:/MPI/SDK/Include} to yours
+                "D:/MPI/SDK/Include",
+                "-L",
+                // TODO - update {D:/MPI/SDK/Lib/x64} to yours
+                "D:/MPI/SDK/Lib/x64",
+                "-Xcompiler",
+                "/openmp",
+                "-lmsmpi"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "Compile program using CUDA, MPI and OPENMP"
+        },
+
+        {
+            "label": "Run Program (CUDA, MPI, OPENMP)",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "mpiexec",
+                "-n",
+                "${input:numProcesses}",
+                "${workspaceFolder}\\bin\\${fileBasenameNoExtension}.exe",
+                "${input:argv1}",
+                "${input:argv2}"
+            ],
+            "problemMatcher": [],
+            "detail": "Run program using 2 processor - change if necessary"
+        },
+        {
+            "label": "Clean Bin Directory",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/c",
+                "del",
+                "${workspaceFolder}\\bin\\${fileBasenameNoExtension}.*"
+            ],
+            "problemMatcher": [],
+            "detail": "Delete compiled files in the bin directory"
+        },
+        {
+            "label": "Build and Run",
+            "dependsOn": [
+                "Clean Bin Directory",
+                "Build-64 Program (CUDA, MPI, OPENMP)",
+                "Run Program (CUDA, MPI, OPENMP)"
+            ],
+            "dependsOrder": "sequence",
+            "detail": "Rebuild and run program"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "numProcesses",
+            "type": "promptString",
+            "description": "Enter number of Mpi processes ",
+            "default": "2"
+        },
+        {
+            "id": "argv1",
+            "type": "promptString",
+            "description": "Enter argv-1 as input of ${fileBasenameNoExtension}",
+            "default": "No argv[1]"
+        },
+        {
+            "id": "argv2",
+            "type": "promptString",
+            "description": "Enter argv-2 as input of ${fileBasenameNoExtension}",
+            "default": "No argv[2]"
+        }
+    ]
+}
