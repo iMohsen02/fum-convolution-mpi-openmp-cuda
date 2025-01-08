@@ -17,6 +17,8 @@ std::string getCPU()
 
 void initializeMatrix(std::vector<std::vector<int>> &matrix, int size)
 {
+    srand(time(0));
+
 #pragma omp parallel for
     for (int i = 0; i < size; ++i)
     {

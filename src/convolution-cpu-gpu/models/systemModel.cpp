@@ -40,7 +40,8 @@ std::ostream &operator<<(std::ostream &os, const System &system)
         << "- Threads: " << system.cpu_max_thread << "\n\t\t"
         << "- GPU: " << system.gpu << "\n\t\t"
         << "- GPU Memory: " << system.gpu_memory << " MB\n\t\t"
-        << "- Batch: " << (system.gpu_memory ? system.gpu_memory / 100 : system.cpu_max_thread) << "/" << (System::totalCpuThreads + System::totalGpuThreads) << "\n\t\t"
+        << "- Batch: " << (system.gpu_memory ? system.gpu_memory / 100 : system.cpu_max_thread)
+        << "/" << (System::totalCpuThreads + System::totalGpuThreads) << "\n\t\t"
         << "- GPU Use: " << (system.gpu_memory ? "YES" : "NO") << "\n\n";
     return os;
 }

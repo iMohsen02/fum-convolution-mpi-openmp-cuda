@@ -48,6 +48,10 @@ int main(int argc, char **argv)
     std::vector<std::vector<int>> input(myBatch, std::vector<int>(SIZE, 0));
     std::vector<std::vector<int>> filter = {{1, 0}, {0, -1}};
     std::vector<std::vector<int>> output(myBatch - filter.size() + 1, std::vector<int>(SIZE - filter.size() + 1));
+
+    inputMatrix.resize(SIZE, std::vector<int>(SIZE));
+    initializeMatrix(inputMatrix, SIZE);
+
     double end_initializing = MPI_Wtime();
 
     double start_scatter_data = MPI_Wtime();

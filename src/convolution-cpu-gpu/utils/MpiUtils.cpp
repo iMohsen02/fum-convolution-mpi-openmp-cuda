@@ -62,14 +62,14 @@ void calcBatchPerCore(int rank, int &batchPerCore, const int SIZE)
     MPI_Bcast(&batchPerCore, 1, MPI_INT, MASTER, MPI_COMM_WORLD);
 }
 
-void loadBalanceScatter(int rank, std::vector<std::vector<int>> &inputMatrix, const int SIZE, int processors, int myBatch, int bachPerCore, std::vector<System> &systems, std::vector<std::vector<int>> &input)
+void loadBalanceScatter(int rank,
+                        std::vector<std::vector<int>> &inputMatrix,
+                        const int SIZE, int processors, int myBatch, int bachPerCore,
+                        std::vector<System> &systems,
+                        std::vector<std::vector<int>> &input)
 {
     if (rank == MASTER)
     {
-        srand(time(0));
-
-        inputMatrix.resize(SIZE, std::vector<int>(SIZE));
-        initializeMatrix(inputMatrix, SIZE);
 
         int offset = 0;
         for (int r = 0; r < processors; r++)

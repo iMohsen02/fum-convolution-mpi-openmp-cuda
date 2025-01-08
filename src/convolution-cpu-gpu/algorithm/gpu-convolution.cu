@@ -9,11 +9,10 @@ __global__ void convolutionKernel(int *d_input, int *d_filter, int *d_output,
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
 
-
     if (row < outputRows && col < outputCols)
     {
         int sum = 0;
-        
+
         for (int i = 0; i < filterRows; ++i)
         {
             for (int j = 0; j < filterCols; ++j)
@@ -44,11 +43,11 @@ void convolutionGPU(std::vector<std::vector<int>> &input,
     std::vector<int> flatFilter(filterRows * filterCols);
     std::vector<int> flatOutput(outputRows * outputCols, 0);
 
- #pragma omp parallel for
+#pragma omp parallel for
     for (int i = 0; i < inputRows; ++i)
         std::copy(input[i].begin(), input[i].end(), flatInput.begin() + i * inputCols);
- #pragma omp parallel for
-     for (int i = 0; i < filterRows; ++i)
+#pragma omp parallel for
+    for (int i = 0; i < filterRows; ++i)
         std::copy(filter[i].begin(), filter[i].end(), flatFilter.begin() + i * filterCols);
 
     // Allocate device memory
@@ -75,7 +74,7 @@ void convolutionGPU(std::vector<std::vector<int>> &input,
     // Copy the result back to the host
     cudaMemcpy(flatOutput.data(), d_output, flatOutput.size() * sizeof(int), cudaMemcpyDeviceToHost);
 
-// #pragma parallel for
+#pragma parallel for
     for (int i = 0; i < outputRows; ++i)
         std::copy(flatOutput.begin() + i * outputCols, flatOutput.begin() + (i + 1) * outputCols, output[i].begin());
 
@@ -83,7 +82,6 @@ void convolutionGPU(std::vector<std::vector<int>> &input,
     cudaFree(d_input);
     cudaFree(d_filter);
     cudaFree(d_output);
-
 }
 
 int detectGPU()
@@ -91,4 +89,4 @@ int detectGPU()
     int gpuCount = 0;
     cudaError_t err = cudaGetDeviceCount(&gpuCount);
     return err != cudaSuccess ? 0 : gpuCount;
-} 
+}
