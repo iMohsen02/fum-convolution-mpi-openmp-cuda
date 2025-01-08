@@ -15,7 +15,7 @@ The core of the project is the convolution operation, where the system automatic
 
 Additionally, this project compares the performance of normal CUDA cores and Tensor cores in GPU-based convolution. While normal CUDA cores are used for general-purpose computation, Tensor cores—which are optimized for high-throughput matrix operations—offer performance improvements when leveraging reduced-precision data types such as FP16 or INT8. The project demonstrates how the choice of core type (normal or tensor) can significantly impact the efficiency of convolution operations, especially for large-scale edge detection tasks.
 
-## By providing both CPU and GPU implementations and comparing normal CUDA cores and Tensor cores, this project offers valuable insights into optimizing convolution-based edge detection algorithms for real-time performance across different hardware configurations.
+By providing both CPU and GPU implementations and comparing normal CUDA cores and Tensor cores, this project offers valuable insights into optimizing convolution-based edge detection algorithms for real-time performance across different hardware configurations.
 
 ## Project Structure
 
@@ -31,10 +31,24 @@ Additionally, this project compares the performance of normal CUDA cores and Ten
 │   ├── main.exp
 │   └── main.lib
 ├── src
-│   ├── main.cu
-│   ├── algorithm
-│   ├── models
-│   └── utils
+│   ├───convolution-cpu-gpu
+│   │   │   main.cu
+│   │   │
+│   │   ├───algorithm
+│   │   │       cpu-convolution.cpp
+│   │   │       gpu-convolution.cu
+│   │   │
+│   │   ├───models
+│   │   │       systemModel.cpp
+│   │   │
+│   │   └───utils
+│   │           cpuUtils.cpp
+│   │           MpiUtils.cpp
+│   │           printUtils.cpp
+│   │
+│   └───convolution-tensorecore
+│         ├─── normal.cu
+│         └── tensore.cu
 └── test
     └── test.cu
 ```
@@ -43,7 +57,7 @@ Additionally, this project compares the performance of normal CUDA cores and Ten
 
 -   **.vscode/**: Contains VS Code configuration files for building and running the project.
 -   **bin/**: Stores compiled binaries and executable files.
--   **src/**: Source code directory where all `.cu` files and related modules reside.
+-   **src/convolution-cpu-gpu**: Source code directory where all `.cu` files and related modules reside.
     -   `main.cu`: Entry point for the project.
     -   `algorithm/`: Directory for algorithms.
     -   `models/`: Directory for data models.
@@ -60,7 +74,6 @@ before start make sure CUDA, CL(visual studio compiler) and MPI be be installed.
 
 1. Copy the `sample-vscode-config` folder and rename it to your project name.
 2. Replace `D:/MPI/SDK/Include` and `D:/MPI/SDK/Lib/x64` with your system paths in `.vscode/tasks.json`.
-3. Write your code in `src/main.cu` or create additional files in the appropriate subdirectories.
 
 ---
 
